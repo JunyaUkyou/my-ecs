@@ -1,0 +1,10 @@
+variable "vpc_id" { type = string }
+variable "app_name" { type = string }
+variable "backend_health_check" { type = string }
+variable "frontend_health_check" { type = string }
+variable "backend_port" { type = number }
+variable "frontend_port" { type = number }
+variable "subnet_public_a_id" { type = string }
+variable "subnet_public_c_id" { type = string }
+variable "security_group_alb_id" { type = string }
+variable "certificate_arn" { type = string }

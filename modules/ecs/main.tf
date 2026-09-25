@@ -1,7 +1,3 @@
-# __generated__ by Terraform
-# Please review these resources and move them into your main configuration files.
-
-
 resource "aws_ecs_cluster" "main" {
   name     = "cluster-${var.app_name}"
   tags     = {}
@@ -50,24 +46,21 @@ resource "aws_ecs_service" "main" {
   }
   load_balancer {
     container_name   = "backend"
-    container_port   = var.app_port_list[0]
+    container_port   = var.backend_port
     elb_name         = null
-    target_group_arn = aws_lb_target_group.backend.arn
+    target_group_arn = var.lb_target_backend
   }
   load_balancer {
     container_name   = "frontend"
-    container_port   = var.app_port_list[1]
+    container_port   = var.frontend_port
     elb_name         = null
-    target_group_arn = aws_lb_target_group.frontend.arn
+    target_group_arn = var.lb_target_frontend
   }
   network_configuration {
     assign_public_ip = true
-    security_groups  = [aws_security_group.ecs_task.id]
-    subnets          = [aws_subnet.public_a.id, aws_subnet.public_c.id]
+    security_groups  = [var.security_group_ecs_task_id]
+    subnets          = [var.subnet_public_a_id, var.subnet_public_c_id]
   }
-  depends_on = [
-    aws_lb_listener.http
-  ]
 }
 
 # Task definition
@@ -75,12 +68,12 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode([{
     environment = []
     essential   = true
-    image       = "${aws_ecr_repository.backend.repository_url}:latest"
+    image       = "${var.ecr_repository_backend}:latest"
     logConfiguration = {
       logDriver = "awslogs"
       options = {
         awslogs-create-group  = "true"
-        awslogs-group         = aws_cloudwatch_log_group.backend.name
+        awslogs-group         = var.backend_log
         awslogs-region        = var.aws_region
         awslogs-stream-prefix = "ecs"
       }
@@ -90,9 +83,9 @@ resource "aws_ecs_task_definition" "main" {
     name        = "backend"
     portMappings = [{
       appProtocol   = "http"
-      containerPort = var.app_port_list[0]
-      hostPort      = var.app_port_list[0]
-      name          = "backend-${var.app_port_list[0]}-tcp"
+      containerPort = var.backend_port
+      hostPort      = var.backend_port
+      name          = "backend-${var.backend_port}-tcp"
       protocol      = "tcp"
     }]
     systemControls = []
@@ -100,12 +93,12 @@ resource "aws_ecs_task_definition" "main" {
     }, {
     environment = []
     essential   = true
-    image       = "${aws_ecr_repository.frontend.repository_url}:latest"
+    image       = "${var.ecr_repository_frontend}:latest"
     logConfiguration = {
       logDriver = "awslogs"
       options = {
         awslogs-create-group  = "true"
-        awslogs-group         = aws_cloudwatch_log_group.frontend.name
+        awslogs-group         = var.frontend_log
         awslogs-region        = var.aws_region
         awslogs-stream-prefix = "ecs"
       }
@@ -114,9 +107,9 @@ resource "aws_ecs_task_definition" "main" {
     mountPoints = []
     name        = "frontend"
     portMappings = [{
-      containerPort = var.app_port_list[1]
-      hostPort      = var.app_port_list[1]
-      name          = "frontend-${var.app_port_list[1]}-tcp"
+      containerPort = var.frontend_port
+      hostPort      = var.frontend_port
+      name          = "frontend-${var.frontend_port}-tcp"
       protocol      = "tcp"
     }]
     systemControls = []
@@ -124,7 +117,7 @@ resource "aws_ecs_task_definition" "main" {
   }])
   cpu                      = "1024"
   enable_fault_injection   = false
-  execution_role_arn       = data.aws_iam_role.ecs_execution.arn
+  execution_role_arn       = var.role_ecs_execution_arn
   family                   = "task-${var.app_name}"
   ipc_mode                 = null
   memory                   = "2048"

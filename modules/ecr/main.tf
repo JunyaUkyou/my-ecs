@@ -1,6 +1,3 @@
-# __generated__ by Terraform
-# Please review these resources and move them into your main configuration files.
-
 
 resource "aws_ecr_repository" "frontend" {
   image_tag_mutability = "MUTABLE"
