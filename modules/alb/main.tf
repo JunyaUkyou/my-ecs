@@ -1,6 +1,3 @@
-# __generated__ by Terraform
-# Please review these resources and move them into your main configuration files.
-
 # backend
 resource "aws_lb_target_group" "backend" {
   deregistration_delay               = "300"
@@ -10,7 +7,7 @@ resource "aws_lb_target_group" "backend" {
   load_balancing_anomaly_mitigation  = "off"
   load_balancing_cross_zone_enabled  = "use_load_balancer_configuration"
   name                               = var.app_name
-  port                               = var.app_port_list[0]
+  port                               = var.backend_port
   protocol                           = "HTTP"
   protocol_version                   = "HTTP1"
   proxy_protocol_v2                  = null
@@ -18,13 +15,13 @@ resource "aws_lb_target_group" "backend" {
   tags                               = {}
   tags_all                           = {}
   target_type                        = "ip"
-  vpc_id                             = aws_vpc.main.id
+  vpc_id                             = var.vpc_id
   health_check {
     enabled             = true
     healthy_threshold   = 5
     interval            = 30
     matcher             = "200"
-    path                = var.health_check_list[0]
+    path                = var.backend_health_check
     port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = 5
@@ -57,7 +54,7 @@ resource "aws_lb_target_group" "frontend" {
   load_balancing_anomaly_mitigation  = "off"
   load_balancing_cross_zone_enabled  = "use_load_balancer_configuration"
   name                               = "${var.app_name}-front"
-  port                               = var.app_port_list[1]
+  port                               = var.frontend_port
   protocol                           = "HTTP"
   protocol_version                   = "HTTP1"
   proxy_protocol_v2                  = null
@@ -65,13 +62,13 @@ resource "aws_lb_target_group" "frontend" {
   tags                               = {}
   tags_all                           = {}
   target_type                        = "ip"
-  vpc_id                             = aws_vpc.main.id
+  vpc_id                             = var.vpc_id
   health_check {
     enabled             = true
     healthy_threshold   = 5
     interval            = 30
     matcher             = "200"
-    path                = var.health_check_list[1]
+    path                = var.frontend_health_check
     port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = 5
@@ -98,7 +95,7 @@ resource "aws_lb_target_group" "frontend" {
 # listener
 resource "aws_lb_listener" "http" {
   alpn_policy                          = null
-  certificate_arn                      = data.aws_acm_certificate.main.arn
+  certificate_arn                      = var.certificate_arn
   load_balancer_arn                    = aws_lb.main.arn
   port                                 = 443
   protocol                             = "HTTPS"
@@ -148,8 +145,8 @@ resource "aws_lb" "main" {
   load_balancer_type                          = "application"
   name                                        = "alb-${var.app_name}"
   preserve_host_header                        = false
-  security_groups                             = [aws_security_group.alb.id]
-  subnets                                     = [aws_subnet.public_a.id, aws_subnet.public_c.id]
+  security_groups                             = [var.security_group_alb_id]
+  subnets                                     = [var.subnet_public_a_id, var.subnet_public_c_id]
   tags                                        = {}
   tags_all                                    = {}
   xff_header_processing_mode                  = "append"

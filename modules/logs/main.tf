@@ -1,6 +1,3 @@
-# __generated__ by Terraform
-# Please review these resources and move them into your main configuration files.
-
 # backend
 resource "aws_cloudwatch_log_group" "backend" {
   kms_key_id        = null

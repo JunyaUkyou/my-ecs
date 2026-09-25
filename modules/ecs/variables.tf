@@ -1,0 +1,14 @@
+variable "app_name" { type = string }
+variable "backend_log" { type = string }
+variable "frontend_log" { type = string }
+variable "security_group_ecs_task_id" { type = string }
+variable "subnet_public_a_id" { type = string }
+variable "subnet_public_c_id" { type = string }
+variable "role_ecs_execution_arn" { type = string }
+variable "ecr_repository_backend" { type = string }
+variable "ecr_repository_frontend" { type = string }
+variable "backend_port" { type = number }
+variable "frontend_port" { type = number }
+variable "aws_region" { type = string }
+variable "lb_target_backend" { type = string }
+variable "lb_target_frontend" { type = string }

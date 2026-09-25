@@ -1,5 +1,3 @@
-# __generated__ by Terraform
-# Please review these resources and move them into your main configuration files.
 
 # ALB Security Group
 resource "aws_security_group" "alb" {
@@ -40,7 +38,7 @@ resource "aws_security_group" "alb" {
   revoke_rules_on_delete = null
   tags                   = {}
   tags_all               = {}
-  vpc_id                 = aws_vpc.main.id
+  vpc_id                 = var.vpc_id
 }
 
 # ECS Security Group
@@ -60,27 +58,27 @@ resource "aws_security_group" "ecs_task" {
   ingress = [{
     cidr_blocks      = []
     description      = ""
-    from_port        = var.app_port_list[1]
+    from_port        = var.frontend_port
     ipv6_cidr_blocks = []
     prefix_list_ids  = []
     protocol         = "tcp"
     security_groups  = [aws_security_group.alb.id]
     self             = false
-    to_port          = var.app_port_list[1]
+    to_port          = var.frontend_port
     }, {
     cidr_blocks      = []
     description      = ""
-    from_port        = var.app_port_list[0]
+    from_port        = var.backend_port
     ipv6_cidr_blocks = []
     prefix_list_ids  = []
     protocol         = "tcp"
     security_groups  = [aws_security_group.alb.id]
     self             = false
-    to_port          = var.app_port_list[0]
+    to_port          = var.backend_port
   }]
   name                   = "ecs-container-${var.app_name}"
   revoke_rules_on_delete = null
   tags                   = {}
   tags_all               = {}
-  vpc_id                 = aws_vpc.main.id
+  vpc_id                 = var.vpc_id
 }
