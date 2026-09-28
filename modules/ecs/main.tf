@@ -27,16 +27,16 @@ resource "aws_ecs_service" "main" {
   force_new_deployment               = null
   health_check_grace_period_seconds  = 300
   # iam_role                           = "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
-  launch_type                        = "FARGATE"
-  name                               = "service-${var.app_name}"
-  platform_version                   = "1.4.0"
-  propagate_tags                     = "NONE"
-  scheduling_strategy                = "REPLICA"
-  tags                               = {}
-  tags_all                           = {}
-  task_definition                    = aws_ecs_task_definition.main.arn
-  triggers                           = {}
-  wait_for_steady_state              = null
+  launch_type           = "FARGATE"
+  name                  = "service-${var.app_name}"
+  platform_version      = "1.4.0"
+  propagate_tags        = "NONE"
+  scheduling_strategy   = "REPLICA"
+  tags                  = {}
+  tags_all              = {}
+  task_definition       = aws_ecs_task_definition.main.arn
+  triggers              = {}
+  wait_for_steady_state = null
   deployment_circuit_breaker {
     enable   = true
     rollback = true

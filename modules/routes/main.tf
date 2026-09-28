@@ -1,8 +1,8 @@
 resource "aws_route_table" "public" {
   propagating_vgws = []
-  tags     = {}
-  tags_all = {}
-  vpc_id   = var.vpc_id
+  tags             = {}
+  tags_all         = {}
+  vpc_id           = var.vpc_id
 }
 
 #  Internet Gateway
