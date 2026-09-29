@@ -14,7 +14,7 @@ resource "aws_security_group" "alb" {
     to_port          = 0
   }]
   ingress = [{
-    cidr_blocks      = [var.cidr_block]
+    cidr_blocks      = [var.private_ip_address]
     description      = ""
     from_port        = 443
     ipv6_cidr_blocks = []
@@ -24,7 +24,7 @@ resource "aws_security_group" "alb" {
     self             = false
     to_port          = 443
     }, {
-    cidr_blocks      = [var.cidr_block]
+    cidr_blocks      = [var.private_ip_address]
     description      = ""
     from_port        = 80
     ipv6_cidr_blocks = []

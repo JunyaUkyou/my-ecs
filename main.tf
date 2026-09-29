@@ -33,6 +33,7 @@ module "security_group" {
   cidr_block              = var.cidr_block
   backend_port            = var.app_port_list[0]
   frontend_port           = var.app_port_list[1]
+  private_ip_address      = var.private_ip_address
 }
 
 module "routes" {
