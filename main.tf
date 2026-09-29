@@ -4,11 +4,24 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.0"
+    }
   }
 }
 
 provider "aws" {
   region = var.aws_region
+}
+provider "http" {}
+
+data "http" "my_ip" {
+  url = "https://checkip.amazonaws.com"
+}
+
+locals {
+  my_ip_cidr = "${chomp(data.http.my_ip.response_body)}/32"
 }
 
 module "vpc" {
@@ -33,7 +46,7 @@ module "security_group" {
   cidr_block              = var.cidr_block
   backend_port            = var.app_port_list[0]
   frontend_port           = var.app_port_list[1]
-  private_ip_address      = var.private_ip_address
+  private_ip_address      = local.my_ip_cidr
 }
 
 module "routes" {
