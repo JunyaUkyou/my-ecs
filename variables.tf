@@ -57,3 +57,8 @@ variable "domain_name" {
   description = "Domain Name"
   type        = string
 }
+
+variable "private_ip_address" {
+  description = "Private IP Address"
+  type        = string
+}
