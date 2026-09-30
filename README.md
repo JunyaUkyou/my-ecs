@@ -31,6 +31,8 @@ This repository contains Terraform (Infrastructure as Code) configurations for b
 
 ```text
 .
+├── assets
+│   └── architectureDiagram.svg
 ├── main.tf
 ├── modules
 │   ├── acm
@@ -43,6 +45,8 @@ This repository contains Terraform (Infrastructure as Code) configurations for b
 │   ├── securityGroup
 │   ├── subnet
 │   └── vpc
+├── README.md
+├── terraform.tfvars.example
 └── variables.tf
 ```
 
@@ -51,7 +55,7 @@ This repository contains Terraform (Infrastructure as Code) configurations for b
 
 ### 1. Clone the repository
 ```
-git clone https://github.com/hogehoge/my-ecs.git
+git clone https://github.com/JunyaUkyou/my-ecs.git
 cd my-ecs
 
 ```
@@ -91,6 +95,9 @@ The default desired task count is set to 0. Once your images are pushed to ECR, 
 
 
 
-## Note
+## Scope of this Repository
+This Terraform configuration manages the ECS cluster, services, tasks, and ECR repositories for the frontend and backend.
 
-- DNS record configurations are not included in this Terraform code. Please configure your DNS settings manually.
+### Out of Scope (Not Included)
+* DNS record configurations (Route 53, etc.)
+* Database resources (e.g., Amazon RDS / External DB)
