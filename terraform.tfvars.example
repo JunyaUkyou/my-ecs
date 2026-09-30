@@ -1,0 +1,26 @@
+# AWS Region
+aws_region = "ap-northeast-1"
+
+# Application Name (used as prefix/suffix for AWS resources)
+app_name = "my-app"
+
+# Domain Name (e.g., example.com)
+domain_name = "example.com"
+
+# Network Configurations
+vpc_cidr               = "10.0.0.0/16"
+subnet_cidrs            = ["10.0.1.0/24", "10.0.2.0/24"]
+availability_zones     = ["ap-northeast-1a", "ap-northeast-1c"]
+internet_gateway_name  = "my-app-igw"
+
+# Allowed IP CIDR for Access Control (e.g., Your Office/Home IP: 203.0.113.1/32)
+cidr_block = "0.0.0.0/0"
+
+# Application Ports [0: Backend Port, 1: Frontend Port]
+app_port_list = [8000, 3000]
+
+# Security Group Name
+alb_security_group_name = "my-app-alb-sg"
+
+# ALB Health Check Paths [0: Backend, 1: Frontend]
+health_check_list = ["/api/health", "/"]
