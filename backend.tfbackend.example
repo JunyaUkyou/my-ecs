@@ -1,0 +1,4 @@
+bucket       = "backed-name"
+key          = "my-ecs/key-name"
+region       = "ap-northeast-1"
+use_lockfile = true

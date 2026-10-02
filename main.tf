@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 1.16.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -9,6 +10,9 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  # Empty backend definition （configuration is injected from "terraform init"）
+  backend "s3" {}
 }
 
 provider "aws" {
