@@ -47,3 +47,4 @@ terraform.rc
 import.tf
 imports
 backend.tfbackend
+.DS_Store

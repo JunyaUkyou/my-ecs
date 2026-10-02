@@ -12,7 +12,11 @@ This repository contains Terraform (Infrastructure as Code) configurations for b
 
 ## Architecture
 
-![Architecture Diagram](./assets/architectureDiagram.svg)
+Click the image to view in full resolution.
+
+[![アーキテクチャ図](./assets/architectureDiagram.png)](./assets/architectureDiagram.png)
+
+
 
 ### Key Components
 - VPC / Subnets: High availability with a Multi-AZ architecture (2 Public Subnets).
