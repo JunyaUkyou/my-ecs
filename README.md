@@ -47,9 +47,24 @@ This repository contains Terraform (Infrastructure as Code) configurations for b
 │   └── vpc
 ├── README.md
 ├── terraform.tfvars.example
+├── backend.tfbackend.example
 └── variables.tf
 ```
 
+
+## Prerequisites
+
+Create S3 Bucket for Backend State Management
+Before initializing Terraform, you must create an S3 bucket to store the `terraform.tfstate` file remotely and enable state locking.
+
+#### 1. Create S3 Bucket
+Create an S3 bucket (e.g., `your-tfstate-bucket-name`) in AWS Console or AWS CLI.
+
+#### 2. Enable Security & Versioning:
+Enable Bucket Versioning, Server-Side Encryption (AES256), and Block All Public Access for security.
+
+#### 3. State Locking (S3 Native):
+This repository utilizes native S3 state locking (`use_lockfile = true`) provided in Terraform v1.10+, eliminating the need for a separate DynamoDB table.
 
 ## Usage
 
@@ -62,6 +77,13 @@ cd my-ecs
 
 ### 2. Prepare configuration files
 
+Copy `backend.tfbackend.example` to create `backend.tfbackend`, and update it with your S3 backend configurations.
+
+```
+cp backend.tfbackend.example backend.tfbackend
+```
+
+
 Copy `terraform.tfvars.example` to create `terraform.tfvars`, and modify the settings as needed.
 
 Copy terraform.tfvars.example to create terraform.tfvars, and modify the values according to your environment requirements.
@@ -71,8 +93,11 @@ cp terraform.tfvars.example terraform.tfvars
 ```
 
 ### 3. Initialize and review the execution plan
+
+Initialize Terraform by specifying your backend configuration file.
+
 ```
-terraform init
+terraform init -backend-config=backend.tfbackend
 
 terraform validate
 
